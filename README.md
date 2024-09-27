@@ -1,8 +1,8 @@
 
-<H3>ENTER YOUR NAME</H3>
-<H3>ENTER YOUR REGISTER NO.</H3>
+<H3>ENTER YOUR NAME: Logesh.N.A</H3>
+<H3>ENTER YOUR REGISTER NO: 212223240078</H3>
 <H3>EX. NO.4</H3>
-<H3>DATE:</H3>
+<H3>DATE: 27.9.24</H3>
 <H1 ALIGN =CENTER>Implementation of MLP with Backpropagation for Multiclassification</H1>
 <H3>Aim:</H3>
 To implement a Multilayer Perceptron for Multi classification
@@ -116,11 +116,51 @@ Normalize our dataset.
 
 <H3>Program:</H3> 
 
-Insert your code here
+```
+import pandas as pd
+from sklearn import preprocessing
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.neural_network import MLPClassifier
+from sklearn.metrics import classification_report, confusion_matrix
 
-<H3>Output:</H3>
+file_path = '/mnt/data/Iris.csv'
+irisdata = pd.read_csv(file_path)
 
-Show your results here
+X = irisdata[['SepalLengthCm', 'SepalWidthCm', 'PetalLengthCm', 'PetalWidthCm']]
+y = irisdata['Species']
+
+le = preprocessing.LabelEncoder()
+y_encoded = le.fit_transform(y)
+
+X_train, X_test, y_train, y_test = train_test_split(X, y_encoded, test_size=0.20, random_state=42)
+
+scaler = StandardScaler()
+scaler.fit(X_train)
+X_train = scaler.transform(X_train)
+X_test = scaler.transform(X_test)
+
+mlp = MLPClassifier(hidden_layer_sizes=(10, 10, 10), max_iter=1000)
+mlp.fit(X_train, y_train)
+
+predictions = mlp.predict(X_test)
+flower_predictions = le.inverse_transform(predictions)
+
+print("Predicted Flower Names:")
+print(flower_predictions)
+
+print("\nConfusion Matrix:")
+print(confusion_matrix(y_test, predictions))
+
+report = classification_report(y_test, predictions, target_names=le.classes_)
+print("\nClassification Report:")
+print(report)
+
+```
+
+<H3>Output:![Screenshot 2024-09-27 090101](https://github.com/user-attachments/assets/4955cd2b-f334-427a-8d8d-47009ac575d9) </H3>
+
+
 
 <H3>Result:</H3>
 Thus, MLP is implemented for multi-classification using python.
